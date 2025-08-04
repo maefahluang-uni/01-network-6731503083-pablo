@@ -22,6 +22,7 @@ The `MockWebServer` in package `th.mfu` serves the web server in our system. It 
 ```
  The main method creates a new instance of MockWebServer and starts it in a new thread.
  It starts the server to run.
+ It also lets the user know that the server is running on a specific port and stops the server when the user presses any key.
 ```
 6. Run the `main()`, point the web browser to `http://localhost:8080` and `http://localhost:8081`
 It should shows a simple HTML with the word such as  `Hello, Web! on Port 8080`.
