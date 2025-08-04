@@ -15,21 +15,71 @@ public class MockWebServer implements Runnable {
     public void run() {
 
         // TODO Create a server socket bound to specified port
+        ServerSocket serverSocket = null;
+        try {
+            serverSocket = new ServerSocket(port);
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 
         System.out.println("Mock Web Server running on port " + port + "...");
 
         while (true) {
             // TODO Accept incoming client connections
+            Socket clientSocket = null;
+            try {
+                clientSocket = serverSocket.accept();
+            } catch (IOException e) {
+                System.err.println("Error accepting client connection on port " + port);
+                e.printStackTrace();
+                
+            }
 
             // TODO Create input and output streams for the client socket
+            BufferedReader in = null;
+            PrintWriter out = null;
+            try {
+                in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+                out = new PrintWriter(clientSocket.getOutputStream(), true);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                
+            }
 
             // TODO: Read the request from the client using BufferedReader
+            BufferedReader requestReader = in;
+            StringBuilder requestBuilder = new StringBuilder();
+            String line;
+            try {
+                while ((line = requestReader.readLine()) != null && !line.isEmpty()) {
+                    requestBuilder.append(line).append("\r\n");
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                
+            }
 
             // TODO: send a response to the client
             String response = "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\n\r\n"
                     + "<html><body>Hello, Web! on Port " + port + "</body></html>";
+            try {
+                out.println(response);
+                
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
             // TODO: Close the client socket
+            try {
+                clientSocket.close();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+                
+            
 
         }
 
